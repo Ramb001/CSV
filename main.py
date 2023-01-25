@@ -8,9 +8,13 @@ def openFile():
     fileName = str(input())
     with open(fileName, newline="") as file:
         reader = csv.DictReader(file)
-        # {A1: 1,...} ключ - значени верха и левого бока, значение - значение ячейки
         for row in reader:
             stroke = list(row.values())[0]
+            try:
+                int(stroke)
+            except ValueError:
+                print('Value Error')
+                quit()
             col = list(row.keys())[1:]
             values = list(row.values())[1:]
             for i in range(len(col)):
@@ -26,18 +30,22 @@ def openFile():
 
 
 def getValues(fitem, sitem):
-    return int(table.get(fitem)) + int(table.get(sitem))
+    return str(int(table.get(fitem)) + int(table.get(sitem)))
 
 
 def newValues():
     for k, v in table.items():
-        if v[0] == '=':
+        if v[0] == "=":
             for i in range(len(v)):
-                if v[i] == '+':
+                if v[i] == "+":
                     index = i
                     fitem = v[1:index]
                     sitem = v[index+1:]
                     table[k] = getValues(fitem, sitem)
+                    
+                    
+def writeFile():
+    pass
 
 
 if __name__ == "__main__":
