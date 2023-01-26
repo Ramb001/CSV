@@ -55,8 +55,8 @@ def newValues():
             else:
                 print('Invalid format')
                 quit()
-                    
-                    
+
+          
 def writeFile():
     pass
 
