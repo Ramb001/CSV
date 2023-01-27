@@ -13,7 +13,7 @@ def openFile():
             try:
                 int(stroke)
             except ValueError:
-                print('Value Error')
+                print('Value Error!')
                 quit()
             col = list(row.keys())[1:]
             values = list(row.values())[1:]
@@ -23,17 +23,16 @@ def openFile():
     print(table)
 
 
-def getValue(fitem, sitem, operator):
+def getValue(fi, si, op):
     ops = {'+': lambda x, y: x + y,
            '-': lambda x, y: x - y,
            '*': lambda x, y: x * y,
            '/': lambda x, y: x / y}
     try:
-        int(table.get(fitem)) or float(table.get(fitem))
-        int(table.get(sitem)) or float(table.get(sitem))
-    except ValueError:
-        print("Error")
-    return str(ops[operator](int(table.get(fitem)), int(table.get(sitem))))
+        return str(ops[op](float(table.get(fi)), float(table.get(si))))
+    except ZeroDivisionError:
+        print('Division by 0!')
+        quit()
 
 
 def getNames(cell):
@@ -53,7 +52,7 @@ def newValues():
                 fitem, sitem, operator = getNames(v)
                 table[k] = getValue(fitem, sitem, operator)
             else:
-                print('Invalid format')
+                print('Invalid format!')
                 quit()
 
           
