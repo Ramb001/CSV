@@ -24,31 +24,31 @@ def openFile():
             for i in range(len(col)):
                 cell = col[i] + stroke
                 table[cell] = values[i]
-                
-    print(table)
     
+    
+def getNames(cell):
+    for i in range(len(cell)):
+        if cell[i] in "+-*/":
+            return cell[1:i], cell[i + 1 :], cell[i]
+    else:
+        print('Invalid table format!')
+        quit()
+        
 
 def checkPrevValue(prevValue, curValue):
-    return prevValue == curValue
+    fitem, sitem, _ = getNames(curValue)
+    if fitem == prevValue or sitem == prevValue:
+        return False
+    return True
 
 
 def getValue(cell):
-    # print(cell)
     ops = {'+': lambda x, y: x + y,
-       '-': lambda x, y: x - y,
-       '*': lambda x, y: x * y,
-       '/': lambda x, y: x / y}
+           '-': lambda x, y: x - y,
+           '*': lambda x, y: x * y,
+           '/': lambda x, y: x / y}
     
-    for i in range(len(cell)):
-        if cell[i] == "+" or cell[i] == "-" or cell[i] == "*" or cell[i] == "/":
-            index = i
-            operator = cell[i]
-            fitem = cell[1:index]
-            sitem = cell[index+1:]
-            break
-    else:
-        print('Invalid format of cell!')
-        quit()
+    fitem, sitem, operator = getNames(cell)
     
     checkValue(fitem)
     checkValue(sitem)
@@ -66,18 +66,18 @@ def getValue(cell):
 
 
 def checkValue(value):
+    if value not in table:
+        print('Invalid table format!')
+        quit()
     if table.get(value)[0] == '=':
+        if not checkPrevValue(value, table.get(value)):
+            print('Invalid table format!')
+            quit()
         try:
             table[value] = getValue(table.get(value))
         except RecursionError:
             print('Invalid table format!')
             quit()
-
-
-def newValues():
-    for k, v in table.items():
-        if v[0] == "=":
-            table[k] = getValue(v)
 
           
 def writeFile():
@@ -86,5 +86,8 @@ def writeFile():
 
 if __name__ == "__main__":
     openFile()
-    newValues()
+    print(table)
+    for k, v in table.items():
+        if v[0] == "=":
+            table[k] = getValue(v)
     print(table)
