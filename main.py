@@ -1,24 +1,12 @@
 import csv
+import sys
 
 
 table = {}
-ops = {'+': lambda x, y: x + y,
-       '-': lambda x, y: x - y,
-       '*': lambda x, y: x * y,
-       '/': lambda x, y: x / y}
-
-
-def isInt(num):
-    try:
-        int(num)
-        return True
-    except ValueError:
-        return False
 
 
 def openFile():
-    fileName = str(input())
-    with open(fileName, newline="") as file:
+    with open(sys.argv[1], newline="") as file:
         reader = csv.DictReader(file)
         
         for row in reader:
@@ -38,41 +26,58 @@ def openFile():
                 table[cell] = values[i]
                 
     print(table)
+    
+
+def checkPrevValue(prevValue, curValue):
+    return prevValue == curValue
 
 
-def getNames(cell):
+def getValue(cell):
+    # print(cell)
+    ops = {'+': lambda x, y: x + y,
+       '-': lambda x, y: x - y,
+       '*': lambda x, y: x * y,
+       '/': lambda x, y: x / y}
+    
     for i in range(len(cell)):
         if cell[i] == "+" or cell[i] == "-" or cell[i] == "*" or cell[i] == "/":
             index = i
             operator = cell[i]
             fitem = cell[1:index]
             sitem = cell[index+1:]
-    return fitem, sitem, operator
-
-
-def getValue(cell, key):
-    fitem, sitem, operator = getNames(cell)
-    if table.get(fitem)[0] == '=':
-        table[fitem] = getValue(table.get(fitem), fitem)
+            break
+    else:
+        print('Invalid format of cell!')
+        quit()
+    
+    checkValue(fitem)
+    checkValue(sitem)
+    
     try:
         res = ops[operator](float(table.get(fitem)), float(table.get(sitem)))
-        if isInt(res): 
-            res = int(res)
-        table[key] = res
-        
     except ZeroDivisionError:
         print('Division by 0!')
         quit()
+        
+    if int(res) == res: 
+        res = int(res)
+        
+    return str(res)
+
+
+def checkValue(value):
+    if table.get(value)[0] == '=':
+        try:
+            table[value] = getValue(table.get(value))
+        except RecursionError:
+            print('Invalid table format!')
+            quit()
 
 
 def newValues():
     for k, v in table.items():
         if v[0] == "=":
-            if "+" in v or "-" in v or "*" in v or "/" in v:
-                getValue(v, k)
-            else:
-                print('Invalid format of cell!')
-                quit()
+            table[k] = getValue(v)
 
           
 def writeFile():
