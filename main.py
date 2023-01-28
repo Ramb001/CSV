@@ -33,13 +33,6 @@ def getNames(cell):
     else:
         print('Invalid table format!')
         quit()
-        
-
-def checkPrevValue(prevValue, curValue):
-    fitem, sitem, _ = getNames(curValue)
-    if fitem == prevValue or sitem == prevValue:
-        return False
-    return True
 
 
 def getValue(cell):
@@ -70,9 +63,6 @@ def checkValue(value):
         print('Invalid table format!')
         quit()
     if table.get(value)[0] == '=':
-        if not checkPrevValue(value, table.get(value)):
-            print('Invalid table format!')
-            quit()
         try:
             table[value] = getValue(table.get(value))
         except RecursionError:
