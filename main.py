@@ -47,14 +47,18 @@ def getValue(cell):
     checkValue(sitem)
     
     try:
-        res = ops[operator](float(table.get(fitem)), float(table.get(sitem)))
+        int(table.get(fitem))
+        int(table.get(sitem))
+    except ValueError:
+        print('Float digit in table!')
+        quit()
+    
+    try:
+        res = ops[operator](int(table.get(fitem)), int(table.get(sitem)))
     except ZeroDivisionError:
         print('Division by 0!')
         quit()
-        
-    if int(res) == res: 
-        res = int(res)
-        
+
     return str(res)
 
 
@@ -93,4 +97,10 @@ if __name__ == "__main__":
     for k, v in table.items():
         if v[0] == "=":
             table[k] = getValue(v)
+        else:
+            try:
+                int(v)
+            except ValueError:
+                print('Float digit in table!')
+                quit()
     writeFile()
