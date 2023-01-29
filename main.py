@@ -14,11 +14,9 @@ def openFile():
             
             try:
                 int(stroke)
+                if int(stroke) <= 0:
+                    raise ValueError
             except ValueError:
-                print('Value Error!')
-                quit()
-            
-            if int(stroke) <= 0:
                 print('Value Error!')
                 quit()
                 
