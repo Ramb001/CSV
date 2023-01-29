@@ -17,6 +17,10 @@ def openFile():
             except ValueError:
                 print('Value Error!')
                 quit()
+            
+            if int(stroke) <= 0:
+                print('Value Error!')
+                quit()
                 
             col = list(row.keys())[1:]
             values = list(row.values())[1:]
@@ -31,7 +35,7 @@ def getNames(cell):
         if cell[i] in "+-*/":
             return cell[1:i], cell[i + 1 :], cell[i]
     else:
-        print('Invalid table format!')
+        print('Invalid cell format!')
         quit()
 
 
@@ -50,7 +54,7 @@ def getValue(cell):
         int(table.get(fitem))
         int(table.get(sitem))
     except ValueError:
-        print('Float digit in table!')
+        print('Invalid cell format!')
         quit()
 
     try:
@@ -75,7 +79,7 @@ def checkValue(value):
             quit()
 
           
-def writeFile():
+def showTable():
     values = list(table.values())
     
     with open(sys.argv[1], newline="") as file:
@@ -95,15 +99,19 @@ def writeFile():
 def main():
     openFile()
     for k, v in table.items():
-        if v[0] == "=":
-            table[k] = getValue(v)
-        else:
-            try:
-                int(v)
-            except ValueError:
-                print('Float digit in table!')
-                quit()
-    writeFile()
+        try:
+            if v[0] == "=":
+                table[k] = getValue(v)
+            else:
+                try:
+                    int(v)
+                except ValueError:
+                    print('Invalid cell format!')
+                    quit()
+        except TypeError:
+            print('Cells are clear!')
+            quit()
+    showTable()
 
 if __name__ == "__main__":
     main()
