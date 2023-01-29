@@ -71,13 +71,24 @@ def checkValue(value):
 
           
 def writeFile():
-    pass
+    values = list(table.values())
+    with open(sys.argv[1], newline="") as file:
+        reader = csv.DictReader(file)
+        m = 0
+        names = reader.fieldnames
+        print(*names, sep=',')
+        
+        for row in reader:
+            stroke = list(row.values())
+            for i in range(1, len(stroke)):
+                stroke[i] = values[m]
+                m += 1
+            print(*stroke, sep=',')
 
 
 if __name__ == "__main__":
     openFile()
-    print(table)
     for k, v in table.items():
         if v[0] == "=":
             table[k] = getValue(v)
-    print(table)
+    writeFile()
