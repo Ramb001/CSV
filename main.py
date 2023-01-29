@@ -52,7 +52,7 @@ def getValue(cell):
     except ValueError:
         print('Float digit in table!')
         quit()
-    
+
     try:
         res = int(ops[operator](int(table.get(fitem)), int(table.get(sitem))))
     except ZeroDivisionError:
@@ -92,7 +92,7 @@ def writeFile():
             print(*stroke, sep=',')
 
 
-if __name__ == "__main__":
+def main():
     openFile()
     for k, v in table.items():
         if v[0] == "=":
@@ -104,3 +104,6 @@ if __name__ == "__main__":
                 print('Float digit in table!')
                 quit()
     writeFile()
+
+if __name__ == "__main__":
+    main()
