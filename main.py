@@ -62,6 +62,7 @@ def checkValue(value):
     if value not in table:
         print('Invalid table format!')
         quit()
+        
     if table.get(value)[0] == '=':
         try:
             table[value] = getValue(table.get(value))
