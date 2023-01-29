@@ -54,7 +54,7 @@ def getValue(cell):
         quit()
     
     try:
-        res = ops[operator](int(table.get(fitem)), int(table.get(sitem)))
+        res = int(ops[operator](int(table.get(fitem)), int(table.get(sitem))))
     except ZeroDivisionError:
         print('Division by 0!')
         quit()
