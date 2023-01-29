@@ -73,6 +73,7 @@ def checkValue(value):
           
 def writeFile():
     values = list(table.values())
+    
     with open(sys.argv[1], newline="") as file:
         reader = csv.DictReader(file)
         m = 0
